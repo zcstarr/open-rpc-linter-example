@@ -1,2 +1,21 @@
 extends:
   - recommended
+rules:
+  param-count-limit:
+    description: "Methods other than searchInventory should accept no more than four params."
+    given: "$.methods[?(@.name != 'searchInventory')].params"
+    severity: warn
+    then:
+      function: schema
+      functionOptions:
+        type: array
+        maxItems: 4
+  search-inventory-param-count-limit:
+    description: "searchInventory may keep its fifth parameter to preserve existing positional indexes."
+    given: "$.methods[?(@.name == 'searchInventory')].params"
+    severity: warn
+    then:
+      function: schema
+      functionOptions:
+        type: array
+        maxItems: 5

@@ -117,6 +117,11 @@ semantic correctness.
 
 The coverage tool's Ajv 7 dependency is overridden with the pinned Ajv 8 validator
 to avoid its ReDoS advisory; the integration runs under this override.
-The pinned recommended lint rules allow at most four method parameters.
-`searchInventory` retains five for positional compatibility, so lint reports one
-parameter-count warning. There are no documentation or license warnings.
+`rules.yml` retains all recommended checks, with a narrow count exception:
+`searchInventory` may have five parameters to preserve positional compatibility;
+every other method is limited to four. A sixth search parameter or a fifth
+parameter on another method still fails the lint policy.
+`npm run lint` requires zero errors and zero warnings. It checks the pinned
+linter's JSON report because the underlying CLI exits successfully for warnings.
+CI and `npm run verify` use this strict check. Invalid reports and linter failures
+also fail the check.
