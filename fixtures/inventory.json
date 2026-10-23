@@ -1,0 +1,76 @@
+[
+  {
+    "listing": {
+      "id": "veh-1001",
+      "make": "Toyota",
+      "model": "Camry",
+      "vehicleType": "sedan",
+      "year": 2024,
+      "price": 28999,
+      "mileage": 12,
+      "color": "Silver",
+      "vin": "4T1B11HK1KU123456"
+    },
+    "distanceMilesByZip": { "78701": 3, "75201": 198 }
+  },
+  {
+    "listing": {
+      "id": "veh-1002",
+      "make": "Toyota",
+      "model": "Camry",
+      "vehicleType": "sedan",
+      "year": 2024,
+      "price": 31999,
+      "mileage": 20
+    },
+    "distanceMilesByZip": { "78701": 12, "75201": 196 }
+  },
+  {
+    "listing": {
+      "id": "veh-2001",
+      "make": "Ford",
+      "model": "F-150",
+      "vehicleType": "truck",
+      "year": 2024,
+      "price": 42999,
+      "mileage": 30
+    },
+    "distanceMilesByZip": { "78701": 3, "75201": 200 }
+  },
+  {
+    "listing": {
+      "id": "veh-2002",
+      "make": "Toyota",
+      "model": "Tacoma",
+      "vehicleType": "truck",
+      "year": 2024,
+      "price": 35999,
+      "mileage": 40
+    },
+    "distanceMilesByZip": { "78701": 8, "75201": 190 }
+  },
+  {
+    "listing": {
+      "id": "veh-3001",
+      "make": "Ford",
+      "model": "Transit",
+      "vehicleType": "van",
+      "year": 2023,
+      "price": 34999,
+      "mileage": 12000
+    },
+    "distanceMilesByZip": { "78701": 15, "75201": 4 }
+  },
+  {
+    "listing": {
+      "id": "veh-3002",
+      "make": "Ford",
+      "model": "Transit",
+      "vehicleType": "van",
+      "year": 2024,
+      "price": 39999,
+      "mileage": 50
+    },
+    "distanceMilesByZip": { "78701": 15, "75201": 2 }
+  }
+]

@@ -9,7 +9,7 @@
     {
       "name": "searchInventory",
       "summary": "Search available vehicles",
-      "description": "Returns vehicles matching make, model, price range, and location filters.",
+      "description": "Returns vehicles matching make, model, maximum price, and optional vehicle type, ranked by location. Filters are combined. Omitting vehicleType includes all vehicle types.",
       "params": [
         {
           "name": "make",
@@ -31,6 +31,17 @@
           "description": "Postal code used to rank nearby inventory.",
           "required": true,
           "schema": { "type": "string", "pattern": "^\\d{5}(-\\d{4})?$" }
+        },
+        {
+          "name": "vehicleType",
+          "description": "Optional vehicle classification: sedan, truck, or van (exact lowercase values). Other strings and non-string values, including null, return -32602 Invalid params. Omit this parameter to include all vehicle types.",
+          "required": false,
+          "schema": {
+            "title": "Vehicle type",
+            "description": "Exact lowercase vehicle classification.",
+            "type": "string",
+            "enum": ["sedan", "truck", "van"]
+          }
         }
       ],
       "result": {
@@ -51,8 +62,9 @@
           "params": [
             { "name": "make", "value": "Toyota" },
             { "name": "model", "value": "Camry" },
-            { "name": "maxPrice", "value": 35000 },
-            { "name": "zipCode", "value": "78701" }
+            { "name": "maxPrice", "value": 30000 },
+            { "name": "zipCode", "value": "78701" },
+            { "name": "vehicleType", "value": "sedan" }
           ],
           "result": {
             "name": "vehicles",
@@ -61,11 +73,58 @@
                 "id": "veh-1001",
                 "make": "Toyota",
                 "model": "Camry",
+                "vehicleType": "sedan",
                 "year": 2024,
                 "price": 28999,
                 "mileage": 12,
                 "color": "Silver",
                 "vin": "4T1B11HK1KU123456"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Search Toyota trucks near Austin",
+          "description": "Combine manufacturer and truck filters.",
+          "params": [
+            { "name": "make", "value": "Toyota" },
+            { "name": "zipCode", "value": "78701" },
+            { "name": "vehicleType", "value": "truck" }
+          ],
+          "result": {
+            "name": "vehicles",
+            "value": [
+              {
+                "id": "veh-2002",
+                "make": "Toyota",
+                "model": "Tacoma",
+                "vehicleType": "truck",
+                "year": 2024,
+                "price": 35999,
+                "mileage": 40
+              }
+            ]
+          }
+        },
+        {
+          "name": "Search affordable vans near Dallas",
+          "description": "Combine maximum price and van filters.",
+          "params": [
+            { "name": "maxPrice", "value": 35000 },
+            { "name": "zipCode", "value": "75201" },
+            { "name": "vehicleType", "value": "van" }
+          ],
+          "result": {
+            "name": "vehicles",
+            "value": [
+              {
+                "id": "veh-3001",
+                "make": "Ford",
+                "model": "Transit",
+                "vehicleType": "van",
+                "year": 2023,
+                "price": 34999,
+                "mileage": 12000
               }
             ]
           }
@@ -356,6 +415,11 @@
           "id": { "type": "string", "description": "Inventory identifier." },
           "make": { "type": "string", "description": "Manufacturer." },
           "model": { "type": "string", "description": "Model name." },
+          "vehicleType": {
+            "type": "string",
+            "enum": ["sedan", "truck", "van"],
+            "description": "Vehicle classification, when supplied. Optional for compatibility with existing listings."
+          },
           "year": { "type": "integer", "minimum": 1900, "description": "Model year." },
           "price": { "type": "number", "minimum": 0, "description": "Listed price in USD." },
           "mileage": { "type": "number", "minimum": 0, "description": "Odometer reading in miles." },
