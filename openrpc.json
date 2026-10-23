@@ -3,8 +3,15 @@
   "info": {
     "title": "Car Purchase API",
     "version": "1.0.0",
-    "description": "JSON-RPC methods for searching inventory, financing, and completing a vehicle purchase."
+    "description": "JSON-RPC methods for searching inventory, financing, and completing a vehicle purchase. The included HTTP server implements searchInventory only; the other methods are illustrative contracts."
   },
+  "servers": [
+    {
+      "name": "Local inventory search",
+      "url": "http://127.0.0.1:3000",
+      "description": "Fixture-backed searchInventory only. Other methods return -32601 Method not found."
+    }
+  ],
   "methods": [
     {
       "name": "searchInventory",

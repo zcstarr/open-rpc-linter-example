@@ -1,0 +1,28 @@
+{
+  "name": "open-rpc-linter-example",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fixture-backed JSON-RPC inventory search and OpenRPC contract tests.",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node start.mjs",
+    "check": "node --check search-inventory.mjs && node --check server.mjs && node --check start.mjs && node --check test/search-inventory.test.mjs && node --check test/server.test.mjs",
+    "test": "node --test",
+    "test:api": "node --test test/server.test.mjs",
+    "lint": "openrpc-linter lint openrpc.json -r rules.yml",
+    "verify": "npm run check && npm test && npm run lint"
+  },
+  "devDependencies": {
+    "@open-rpc/openrpc-linter": "0.0.18",
+    "@open-rpc/test-coverage": "2.2.5",
+    "ajv": "8.20.0"
+  },
+  "overrides": {
+    "@open-rpc/test-coverage": {
+      "ajv@^7.0.0": "$ajv"
+    }
+  }
+}

@@ -3,7 +3,7 @@ import inventory from "./fixtures/inventory.json" with { type: "json" };
 const parameterNames = ["make", "model", "maxPrice", "zipCode", "vehicleType"];
 const vehicleTypes = ["sedan", "truck", "van"];
 
-class SearchError extends Error {
+export class SearchError extends Error {
   constructor(code, message) {
     super(message);
     this.code = code;

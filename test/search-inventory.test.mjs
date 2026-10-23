@@ -135,10 +135,3 @@ test("the spec keeps positional compatibility and optional listing classificatio
   assert.ok(!listingSchema.required.includes("vehicleType"));
   assert.deepEqual(listingSchema.properties.vehicleType.enum, typeParameter.schema.enum);
 });
-
-for (const example of searchMethod.examples) {
-  test(`OpenRPC example: ${example.name}`, () => {
-    const params = Object.fromEntries(example.params.map(({ name, value }) => [name, value]));
-    assert.deepEqual(searchInventory(params), example.result.value);
-  });
-}
