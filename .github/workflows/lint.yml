@@ -1,4 +1,4 @@
-name: Lint OpenRPC
+name: Validate inventory API
 
 on:
   push:
@@ -9,5 +9,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts
       # Run `npx @open-rpc/openrpc-linter init if you don't have custom rules.
-      - run: npx @open-rpc/openrpc-linter@0.0.18 lint openrpc.json -r rules.yml
+      - run: npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run check
+      - run: npm test
