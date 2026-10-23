@@ -3,6 +3,10 @@
   "info": {
     "title": "Car Purchase API",
     "version": "1.0.0",
+    "license": {
+      "name": "Apache-2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    },
     "description": "JSON-RPC methods for searching inventory, financing, and completing a vehicle purchase. The included HTTP server implements searchInventory only; the other methods are illustrative contracts."
   },
   "servers": [
@@ -21,23 +25,41 @@
         {
           "name": "make",
           "description": "Vehicle manufacturer (e.g. Toyota, Ford).",
-          "schema": { "type": "string" }
+          "schema": {
+            "title": "Vehicle make",
+            "description": "Manufacturer name to match exactly, such as Toyota or Ford.",
+            "type": "string"
+          }
         },
         {
           "name": "model",
           "description": "Vehicle model name.",
-          "schema": { "type": "string" }
+          "schema": {
+            "title": "Vehicle model",
+            "description": "Model name to match exactly, such as Camry or Transit.",
+            "type": "string"
+          }
         },
         {
           "name": "maxPrice",
           "description": "Maximum price in USD.",
-          "schema": { "type": "number", "minimum": 0 }
+          "schema": {
+            "title": "Maximum price",
+            "description": "Inclusive upper limit on the listed vehicle price, in USD.",
+            "type": "number",
+            "minimum": 0
+          }
         },
         {
           "name": "zipCode",
           "description": "Postal code used to rank nearby inventory.",
           "required": true,
-          "schema": { "type": "string", "pattern": "^\\d{5}(-\\d{4})?$" }
+          "schema": {
+            "title": "Search ZIP code",
+            "description": "Five-digit US ZIP code or ZIP+4 used as the search origin.",
+            "type": "string",
+            "pattern": "^\\d{5}(-\\d{4})?$"
+          }
         },
         {
           "name": "vehicleType",
@@ -55,17 +77,28 @@
         "name": "vehicles",
         "description": "Matching vehicles sorted by distance and price.",
         "schema": {
+          "title": "Matching inventory",
+          "description": "Listings that satisfy every supplied filter, ordered by distance and then price.",
           "type": "array",
           "items": { "$ref": "#/components/schemas/VehicleListing" }
         }
       },
       "errors": [
-        { "code": -32602, "message": "Invalid params" },
-        { "code": -32001, "message": "No inventory found for the given filters" }
+        {
+          "code": -32602,
+          "message": "Invalid params",
+          "description": "The required ZIP code is missing or a search filter has an invalid name, type, or value."
+        },
+        {
+          "code": -32001,
+          "message": "No inventory found for the given filters",
+          "description": "No listing satisfies all supplied search filters."
+        }
       ],
       "examples": [
         {
           "name": "Search Toyota sedans near Austin",
+          "description": "Find a Toyota Camry sedan priced at most 30000 USD near ZIP code 78701.",
           "params": [
             { "name": "make", "value": "Toyota" },
             { "name": "model", "value": "Camry" },
@@ -147,7 +180,11 @@
           "name": "vehicleId",
           "description": "Unique inventory identifier.",
           "required": true,
-          "schema": { "type": "string" }
+          "schema": {
+            "title": "Vehicle ID",
+            "description": "Inventory identifier of the listing to retrieve.",
+            "type": "string"
+          }
         }
       ],
       "result": {
@@ -156,12 +193,21 @@
         "schema": { "$ref": "#/components/schemas/VehicleListing" }
       },
       "errors": [
-        { "code": -32602, "message": "Invalid params" },
-        { "code": -32002, "message": "Vehicle not found" }
+        {
+          "code": -32602,
+          "message": "Invalid params",
+          "description": "The vehicle identifier is missing or a supplied parameter has an invalid type or value."
+        },
+        {
+          "code": -32002,
+          "message": "Vehicle not found",
+          "description": "No inventory listing exists for the supplied vehicle identifier."
+        }
       ],
       "examples": [
         {
           "name": "Get listing details",
+          "description": "Retrieve the specifications and price of listing veh-1001.",
           "params": [{ "name": "vehicleId", "value": "veh-1001" }],
           "result": {
             "name": "vehicle",
@@ -188,17 +234,27 @@
           "name": "vehicleId",
           "description": "Vehicle to quote.",
           "required": true,
-          "schema": { "type": "string" }
+          "schema": {
+            "title": "Vehicle ID",
+            "description": "Inventory identifier of the vehicle to price in the quote.",
+            "type": "string"
+          }
         },
         {
           "name": "tradeInVin",
           "description": "Optional VIN for trade-in valuation.",
-          "schema": { "type": "string" }
+          "schema": {
+            "title": "Trade-in VIN",
+            "description": "Vehicle identification number of the buyer's trade-in.",
+            "type": "string"
+          }
         },
         {
           "name": "addOns",
           "description": "Optional dealer add-ons (e.g. extended warranty, floor mats).",
           "schema": {
+            "title": "Dealer add-ons",
+            "description": "Identifiers of optional dealer products to include in the quote.",
             "type": "array",
             "items": { "type": "string" }
           }
@@ -210,12 +266,21 @@
         "schema": { "$ref": "#/components/schemas/PurchaseQuote" }
       },
       "errors": [
-        { "code": -32602, "message": "Invalid params" },
-        { "code": -32002, "message": "Vehicle not found" }
+        {
+          "code": -32602,
+          "message": "Invalid params",
+          "description": "The vehicle identifier is missing or a quote parameter has an invalid type or value."
+        },
+        {
+          "code": -32002,
+          "message": "Vehicle not found",
+          "description": "No inventory listing exists for the vehicle being quoted."
+        }
       ],
       "examples": [
         {
           "name": "Quote with trade-in",
+          "description": "Quote listing veh-1001 with trade-in credit and an extended warranty.",
           "params": [
             { "name": "vehicleId", "value": "veh-1001" },
             { "name": "tradeInVin", "value": "1HGCM82633A123456" },
@@ -245,7 +310,11 @@
           "name": "vehicleId",
           "description": "Vehicle being financed.",
           "required": true,
-          "schema": { "type": "string" }
+          "schema": {
+            "title": "Vehicle ID",
+            "description": "Inventory identifier of the vehicle in the financing application.",
+            "type": "string"
+          }
         },
         {
           "name": "applicant",
@@ -256,7 +325,12 @@
         {
           "name": "downPayment",
           "description": "Planned down payment in USD.",
-          "schema": { "type": "number", "minimum": 0 }
+          "schema": {
+            "title": "Down payment",
+            "description": "Amount the buyer plans to pay upfront, in USD.",
+            "type": "number",
+            "minimum": 0
+          }
         }
       ],
       "result": {
@@ -265,12 +339,21 @@
         "schema": { "$ref": "#/components/schemas/FinancingOffer" }
       },
       "errors": [
-        { "code": -32602, "message": "Invalid params" },
-        { "code": -32003, "message": "Financing application declined" }
+        {
+          "code": -32602,
+          "message": "Invalid params",
+          "description": "Required vehicle or applicant information is missing, or a financing parameter is invalid."
+        },
+        {
+          "code": -32003,
+          "message": "Financing application declined",
+          "description": "The submitted application does not qualify for a financing offer."
+        }
       ],
       "examples": [
         {
           "name": "Pre-approval request",
+          "description": "Submit an applicant's income and employment details with a 5000 USD down payment.",
           "params": [
             { "name": "vehicleId", "value": "veh-1001" },
             {
@@ -305,13 +388,22 @@
           "name": "vehicleId",
           "description": "Vehicle to test drive.",
           "required": true,
-          "schema": { "type": "string" }
+          "schema": {
+            "title": "Vehicle ID",
+            "description": "Inventory identifier of the vehicle requested for the test drive.",
+            "type": "string"
+          }
         },
         {
           "name": "preferredTime",
           "description": "Requested appointment time in ISO 8601 format.",
           "required": true,
-          "schema": { "type": "string", "format": "date-time" }
+          "schema": {
+            "title": "Preferred test-drive time",
+            "description": "Requested test-drive timestamp in ISO 8601 format, including a time-zone offset.",
+            "type": "string",
+            "format": "date-time"
+          }
         },
         {
           "name": "contact",
@@ -326,12 +418,21 @@
         "schema": { "$ref": "#/components/schemas/TestDriveAppointment" }
       },
       "errors": [
-        { "code": -32602, "message": "Invalid params" },
-        { "code": -32004, "message": "Requested time slot unavailable" }
+        {
+          "code": -32602,
+          "message": "Invalid params",
+          "description": "Required vehicle, appointment time, or contact information is missing or invalid."
+        },
+        {
+          "code": -32004,
+          "message": "Requested time slot unavailable",
+          "description": "The dealership cannot book the requested vehicle at the preferred time."
+        }
       ],
       "examples": [
         {
           "name": "Weekend test drive",
+          "description": "Book listing veh-1001 at the requested time and return dealership confirmation details.",
           "params": [
             { "name": "vehicleId", "value": "veh-1001" },
             { "name": "preferredTime", "value": "2026-09-27T10:00:00Z" },
@@ -365,18 +466,28 @@
           "name": "quoteId",
           "description": "Accepted quote identifier from requestQuote.",
           "required": true,
-          "schema": { "type": "string" }
+          "schema": {
+            "title": "Accepted quote ID",
+            "description": "Identifier of the purchase quote accepted by the buyer.",
+            "type": "string"
+          }
         },
         {
           "name": "financingOfferId",
           "description": "Selected financing offer, if paying with a loan.",
-          "schema": { "type": "string" }
+          "schema": {
+            "title": "Selected financing offer ID",
+            "description": "Identifier of the financing offer used to fund the purchase.",
+            "type": "string"
+          }
         },
         {
           "name": "paymentMethod",
           "description": "How the buyer will pay remaining balance.",
           "required": true,
           "schema": {
+            "title": "Payment method",
+            "description": "Payment arrangement selected by the buyer: cash, financing, or lease.",
             "type": "string",
             "enum": ["cash", "financing", "lease"]
           }
@@ -388,12 +499,21 @@
         "schema": { "$ref": "#/components/schemas/PurchaseRecord" }
       },
       "errors": [
-        { "code": -32602, "message": "Invalid params" },
-        { "code": -32005, "message": "Quote expired or already completed" }
+        {
+          "code": -32602,
+          "message": "Invalid params",
+          "description": "Required quote or payment information is missing, or a purchase parameter is invalid."
+        },
+        {
+          "code": -32005,
+          "message": "Quote expired or already completed",
+          "description": "The accepted quote can no longer be used because it expired or already produced a purchase."
+        }
       ],
       "examples": [
         {
           "name": "Financed purchase",
+          "description": "Complete an accepted quote using the buyer's selected financing offer.",
           "params": [
             { "name": "quoteId", "value": "quote-9001" },
             { "name": "financingOfferId", "value": "fin-7001" },
@@ -415,6 +535,7 @@
   "components": {
     "schemas": {
       "VehicleListing": {
+        "title": "Vehicle listing",
         "type": "object",
         "description": "A vehicle available for purchase.",
         "required": ["id", "make", "model", "year", "price", "mileage"],
@@ -435,6 +556,7 @@
         }
       },
       "PurchaseQuote": {
+        "title": "Purchase quote",
         "type": "object",
         "description": "Itemized out-the-door quote.",
         "required": ["quoteId", "vehicleId", "subtotal", "taxes", "fees", "total"],
@@ -449,6 +571,7 @@
         }
       },
       "Applicant": {
+        "title": "Financing applicant",
         "type": "object",
         "description": "Primary buyer applying for financing.",
         "required": ["fullName", "email", "annualIncome"],
@@ -460,6 +583,7 @@
         }
       },
       "FinancingOffer": {
+        "title": "Financing offer",
         "type": "object",
         "description": "Pre-approved loan terms.",
         "required": ["offerId", "apr", "termMonths", "monthlyPayment"],
@@ -471,6 +595,7 @@
         }
       },
       "ContactInfo": {
+        "title": "Buyer contact information",
         "type": "object",
         "description": "Buyer contact information.",
         "required": ["fullName", "phone", "email"],
@@ -481,6 +606,7 @@
         }
       },
       "TestDriveAppointment": {
+        "title": "Test-drive appointment",
         "type": "object",
         "description": "Scheduled test drive.",
         "required": ["appointmentId", "vehicleId", "scheduledAt", "dealershipAddress"],
@@ -492,6 +618,7 @@
         }
       },
       "PurchaseRecord": {
+        "title": "Purchase record",
         "type": "object",
         "description": "Completed purchase.",
         "required": ["purchaseId", "vehicleId", "totalPaid", "estimatedDeliveryDate"],

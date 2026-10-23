@@ -117,5 +117,6 @@ semantic correctness.
 
 The coverage tool's Ajv 7 dependency is overridden with the pinned Ajv 8 validator
 to avoid its ReDoS advisory; the integration runs under this override.
-The specification linter exits successfully with 58 pre-existing recommended-rule
-warnings and one parameter-count warning because search now has five parameters.
+The pinned recommended lint rules allow at most four method parameters.
+`searchInventory` retains five for positional compatibility, so lint reports one
+parameter-count warning. There are no documentation or license warnings.
