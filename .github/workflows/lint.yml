@@ -11,3 +11,14 @@ jobs:
       - uses: actions/checkout@v4
       # Run `npx @open-rpc/openrpc-linter init if you don't have custom rules.
       - run: npx @open-rpc/openrpc-linter@0.0.18 lint openrpc.json -r rules.yml
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node --check search-inventory.mjs
+      - run: node --check test/search-inventory.test.mjs
+      - run: node --test
